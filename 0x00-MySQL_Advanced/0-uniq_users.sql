@@ -1,11 +1,13 @@
--- An SQL script that creates a table users
+-- An SQL script that creates a table users with these attributes:
+-- id, integer, never null, auto increment and primary key
+-- email, string (255 characters), never null and unique
+-- name, string (255 characters)
+-- If the table already exists, your script should not fail
+-- Your script can be executed on any database
 
-CREATE DATABASE IF NOT EXISTS holberton;
-
-USE holberton;
-
-CREATE TABLE IF NOT EXISTS users (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	email VARCHAR(255) NOT NULL UNIQUE,
-	name VARCHAR(255)
+-- Creates a table user if not exists
+CREATE TABLE IF NOT EXISTS users(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255)
 );
