@@ -1,4 +1,5 @@
 # 0x01. NoSQL
+![NoSQL](https://github.com/alchemistlowkey/alx-backend-storage/assets/46524038/928ba790-c50d-4ded-b18d-3d53ac3c0c12)
 
 ## Resources
 ### Read or watch:
