@@ -1,4 +1,5 @@
 # MySQL advanced
+![mysqlmemes](https://github.com/alchemistlowkey/alx-backend-storage/assets/46524038/e8d1a714-bbb8-480c-b9d4-58383c74de31)
 
 ### Concepts
 For this project, we expect you to look at this concept:
