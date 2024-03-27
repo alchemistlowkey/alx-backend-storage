@@ -1,4 +1,4 @@
-# Alx-backend-storage Repository
+# Alx-backend-storage
 ![backend](https://github.com/alchemistlowkey/alx-backend-storage/assets/46524038/2f5194d7-f020-4692-ab6d-1f2c9a2af55e)
 
 ## Contents
