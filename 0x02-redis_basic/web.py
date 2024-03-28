@@ -66,8 +66,3 @@ def get_page(url: str) -> str:
 
     """
     return requests.get(url).text
-
-
-# Test the function
-print(get_page('http://slowwly.robertomurray.co.uk'))
-print(get_page('http://slowwly.robertomurray.co.uk'))
