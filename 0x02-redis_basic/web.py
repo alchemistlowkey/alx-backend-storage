@@ -5,47 +5,64 @@ wep.py
 import requests
 import redis
 from functools import wraps
-from typing import Callable
 
 
-def count_calls(method: Callable) -> Callable:
+def cache_and_track(func):
     """
-    Decorator to count the number of times a function is called
+    A decorator that caches the HTML content of a URL and tracks the number of
+    accesses for each URL.
+
+    Args:
+    func (callable): The function to be decorated.
+
+    Returns:
+    callable: The decorated function.
     """
-    @wraps(method)
-    def wrapper(url: str) -> str:
+    @wraps(func)
+    def wrapper(url):
         """
-        Initialize Redis client
+        Wrapper function that handles caching and access counting for the
+        provided function.
+
+        Args:
+        url (str): The URL whose HTML content is to be fetched.
+
+        Returns:
+        str: The HTML content of the URL.
+
         """
-        redis_store = redis.Redis()
+        # Initialize Redis connection
+        r = redis.Redis()
 
-        """ Increment access count for the URL """
-        url_key = f"count:{url}"
-        redis_store.incr(url_key)
+        # Check if the URL content is already cached
+        cached_content = r.get(url)
+        if cached_content:
+            return cached_content.decode('utf-8')
 
-        """ Cache the result with an expiration time of 10 sec """
-        result_key = f"result:{url}"
-        cached_result = redis_store.get(result_key)
+        # If not cached, fetch the content from the URL
+        response = requests.get(url)
+        content = response.text
 
-        if cached_result:
-            return cached_result.decode("utf-8")
+        # Cache the content with expiration time of 10 seconds
+        r.setex(url, 10, content)
 
-        """ Call the original function """
-        result = method(url)
-        redis_store.set(url_key, 0)
+        # Track the number of accesses for this URL
+        r.incr(f"count:{url}")
 
-        """ Cache the result with expiration """
-        redis_store.setex(result_key, 10, result)
-
-        return result
-
+        return content
     return wrapper
 
 
-@count_calls
+@cache_and_track
 def get_page(url: str) -> str:
     """
-    Function to obtain HTML content or a URL
+    Fetches the HTML content of a URL.
+
+    Args:
+    url (str): The URL whose HTML content is to be fetched.
+
+    Returns:
+    str: The HTML content of the URL.
+
     """
-    response = requests.get(url)
-    return response.text
+    return requests.get(url).text
